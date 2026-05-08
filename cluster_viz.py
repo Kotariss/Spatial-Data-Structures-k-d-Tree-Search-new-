@@ -98,7 +98,7 @@ def plot_fcm(data, centroids, memberships, save_path=None):
     
     if save_path:
         plt.savefig(save_path, dpi=150, bbox_inches='tight')
-        print(f"✓ График сохранён: {save_path}")
+        print(f"График сохранён: {save_path}")
     plt.show()
 
 def plot_dbscan(data, labels, save_path=None):
