@@ -72,7 +72,7 @@ def plot_elbow_method(data, save_path=None):
     plt.tight_layout()
     if save_path:
         plt.savefig(save_path, dpi=150, bbox_inches='tight')
-        print(f"\n✓ Plot saved to: {save_path}")
+        print(f"\nPlot saved to: {save_path}")
     plt.show()
     return elbow_k
 
@@ -95,13 +95,10 @@ def main():
         print("  gcc main.c kdtree.c fcm.c dbscan.c -o robot -lm")
         sys.exit(1)
 
-    print("="*60)
     print("ELBOW METHOD ANALYSIS")
-    print("="*60)
     print(f"CSV file: {csv_file}")
     print(f"Max clusters: {k_max}")
     print(f"Fuzziness: {fuzziness}")
-    print("-"*60)
 
     data = run_c_elbow(csv_file, k_max, fuzziness, executable)
     if not data:
@@ -109,14 +106,11 @@ def main():
         sys.exit(1)
 
     print(f"\n{'k':<5} {'J_m':<15}")
-    print("-"*20)
     for d in data:
         print(f"{d['k']:<5} {d['J_m']:<15.6f}")
 
     optimal_k = find_optimal_k(data)
-    print("\n" + "="*60)
     print(f"OPTIMAL NUMBER OF CLUSTERS: k = {optimal_k}")
-    print("="*60)
 
     plot_elbow_method(data, save_path="elbow_method.png")
     print(f"\nAnalysis complete! Optimal k = {optimal_k}")
