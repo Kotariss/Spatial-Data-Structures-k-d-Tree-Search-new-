@@ -25,14 +25,27 @@ def run_c_elbow(csv_file, k_max, fuzziness=2.0, executable="./robot"):
     return data
 
 def find_optimal_k(data):
-    """Поиск оптимального числа кластеров методом локтя"""
     ks = [d['k'] for d in data]
     jm_values = [d['J_m'] for d in data]
+    
     if len(jm_values) < 3:
         return ks[-1] if ks else 1
-    diffs = np.diff(jm_values)
+    
+    # Нормируем J_m (делим на максимум)
+    jm_norm = np.array(jm_values) / max(jm_values)
+    
+    # Считаем разности
+    diffs = np.diff(jm_norm)
     accels = np.diff(diffs)
-    return ks[np.argmax(accels) + 2]
+    
+    # Игнорируем первый переход (k=1→2→3) — он всегда большой
+    # Берём начиная с индекса 1 (переход 2→3→4)
+    if len(accels) > 1:
+        best_idx = np.argmax(accels[1:]) + 1  # +1 потому что начали с 1
+    else:
+        best_idx = 0
+    
+    return ks[best_idx + 2]
 
 def plot_elbow_method(data, save_path=None):
     """Построение графика метода локтя"""
